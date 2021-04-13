@@ -1,0 +1,104 @@
+﻿; JeuEtud.txt
+; Fonctions utiles pour exercice3 du TP2
+; Auteur : Eric Gouardères, 2020
+
+;*******************************************************
+; Fonctions utiles pour Minimax et alphabéta
+;********************************************************
+
+; retourne le premier élément d'une liste
+to-report car [liste]
+  report first liste
+end
+
+; retourne une liste privée de son premier élément
+to-report cdr [liste]
+  report but-first liste
+end
+
+; retourne le dernier élément d'une liste
+to-report der [l]
+ report last l
+end
+
+; retourne une liste privée de son dernier élément
+to-report tsd [l]
+  report but-last l
+end
+
+; supprime la première occurence d'un élément dans une liste
+to-report sup [x l]
+  let res []
+  ifelse (empty? l) 
+  [	set res []]
+  [	ifelse (x = (car l)) 
+	[	set res (cdr l)]
+	[	set res cons (car l) (sup x (cdr l))]]
+  report res
+end
+
+; construit une liste par ajout d'un élément en tête d'une liste
+to-report cons [x liste]
+  report fput x liste
+end
+
+;*******************************************************
+; Fonctions du jeu nécessaires pour Minimax et alphabéta
+;********************************************************
+
+; Prédicat pour vérifier si un noeud est un état terminal
+; un etat est terminal lorsqu'il reste deux cartes
+
+to-report etat_terminal? [noeud]
+   report (length (situation noeud)) = 2
+end
+
+
+; calcul de l'heuristique
+
+to-report somme [n l]
+  let res 0
+  ifelse (n = 0) or (empty? l) 
+  [	set res 0]
+  [	let val (max l)
+    set res (val + (somme (n - 1) (sup val l)))]
+  report res
+end
+
+to-report quotient [n1 n2]
+  report int (n1 / n2)
+end
+
+to-report heuristique [noeud]
+  let sit []
+  ifelse ((length (situation noeud)) mod 2 = 1) 
+  [	ifelse (car (situation noeud)) < (cdr (situation noeud)) 
+	[	set sit (tsd (situation noeud))]
+    [	set sit (cdr (situation noeud))]]
+  [	set sit (situation noeud)]
+  report (gain noeud) + (somme (quotient (length sit)  2) sit)
+end
+
+; Génération des fils d'un noeud donné
+to-report noeuds_fils [noeud]
+  let sit situation noeud
+  let num numero noeud
+  let g gain noeud
+  let newg1 g
+  let newg2 g
+
+  if ((length sit ) mod 2 = 0) 
+  [ 
+    set newg1 g + (car sit)
+    set newg2 g + (der sit)                              
+  ]
+  
+  report (list (cons (list (cdr sit)
+                            newg1
+                           (( num * 10) + 1))
+                [])
+               (cons (list (tsd sit)
+                            newg2
+                           ((num * 10) + 2))
+                []))
+end
