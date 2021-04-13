@@ -1,0 +1,275 @@
+﻿; exemple des robots fourrageurs
+; auteur : Eric Gouardères, 2020
+
+; This model was inspired from Ants Model of Uri Wilensky
+; see the copyright notice below.
+
+globals [
+
+  couleur-vaisseau         ;; couleur des patchs vaisseau
+  couleur-minerai          ;; couleur des patchs source de minerai
+  couleur-label-minerai-1  ;; couleur label source minerai 1
+  couleur-label-minerai-2  ;; couleur label source minerai 2
+  couleur-label-minerai-3  ;; couleur label source minerai 3
+  couleur-obstacle         ;; couleur des patchs obstacles
+  couleur-marque           ;; base couleur des patchs avec marque
+  couleur-robot-vide       ;; couleur robot qui ne porte pas de minerai
+  couleur-robot-plein      ;; couleur robot portant du minerai
+]
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Propriétés des agents                                           ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+patches-own [
+
+;***A COMPLETER
+
+]
+
+turtles-own [
+
+;***A COMPLETER
+
+]
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Setup procedures                                                ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+to setup
+  clear-all
+  setup-colors
+  setup-turtles
+  setup-patches
+end
+
+to setup-colors
+  set couleur-vaisseau violet
+  set couleur-minerai yellow
+  set couleur-label-minerai-1 red
+  set couleur-label-minerai-2 lime
+  set couleur-label-minerai-3 brown
+  set couleur-obstacle grey
+  set couleur-marque green
+  set couleur-robot-vide red
+  set couleur-robot-plein couleur-minerai
+end
+
+to setup-turtles
+  crt population
+  [ set shape "robot"
+    set size 3                        ;; plus facile à voir
+	
+    ;***A COMPLETER
+	
+    set color couleur-robot-vide  ]   
+end
+
+to setup-patches
+  ask patches
+  [ setup-vaisseau
+    setup-minerai
+    setup-obstacles
+    recolor-patch ]
+end
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; initialisation des patchs - Patch procedures  ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+to setup-vaisseau  
+  ;; initialisation de la variable vaisseau? pour les patchs vaisseau
+  set vaisseau? (distancexy 0 0) < 5
+  ;; diffusion du signal -- plus fort près du vaisseau
+  set signal 200 - distancexy 0 0
+end
+
+to setup-minerai 
+  set minerai 0
+  ;; initialisation de la source 1 de minerai sur la droite, valeur 1 ou 2 aléatoire
+  if source-minerai-1
+  [set minerai one-of [1 2] ]
+  ;;initialisation de la source 2 de minerai en bas à gauche
+  if source-minerai-2
+  [ set minerai one-of [1 2] ]
+  ;; initialisation de la source 3 de minerai en haut à gauche
+  if source-minerai-3
+  [ set minerai one-of [1 2] ]
+end
+
+to setup-obstacles 
+  ;; initialisation obstacle bas gauche
+  set obstacle? false
+  if ((distancexy (-0.3 * max-pxcor) (-0.3 * max-pycor)) < 3) or ((distancexy (-0.2 * max-pxcor) (-0.3 * max-pycor)) < 3) or ((distancexy (-0.4 * max-pxcor) (-0.3 * max-pycor)) < 3) 
+  [ set obstacle? true 
+    set signal signal * 0.8 ] ;; perte de 20 % du signal sur obstacle
+  ;;initialisation obstacle haut droit
+  if ((distancexy (-0.3 * max-pxcor) (0.5 * max-pycor)) < 3) or ((distancexy (-0.2 * max-pxcor) (0.6 * max-pycor)) < 3) or ((distancexy (-0.1 * max-pxcor) (0.7 * max-pycor)) < 3) 
+  [ set obstacle? true 
+    set signal signal * 0.8 ] ;; perte de 20 % du signal sur obstacle
+end
+
+to recolor-patch 
+  ;; colorer les patchs
+  ifelse vaisseau?
+  [ set pcolor couleur-vaisseau]
+  [ifelse obstacle?
+    [set pcolor couleur-obstacle ]
+    [ifelse minerai > 0
+      [ set pcolor couleur-minerai ]
+      ;;dégradé de couleur de base pour représenter la concentration de marque
+      [ set pcolor scale-color couleur-marque marque 0.1 5 ] ]]
+
+end
+
+to-report source-minerai-1
+    if (pxcor = 0.6 * max-pxcor + 2) and (pycor = 0)
+    [set plabel-color couleur-label-minerai-1
+      set plabel "Source1"]
+    report (distancexy (0.6 * max-pxcor) 0) < 5
+end
+
+to-report source-minerai-2
+    if (pxcor = -0.6 * max-pxcor + 2) and (pycor = -0.6 * max-pycor)
+    [set plabel-color couleur-label-minerai-2
+      set plabel "Source2"]
+    report (distancexy (-0.6 * max-pxcor) (-0.6 * max-pycor)) < 5
+end
+
+to-report source-minerai-3
+    if (pxcor = -0.8 * max-pxcor + 2) and (pycor = 0.8 * max-pycor)
+    [set plabel-color couleur-label-minerai-3
+    set plabel "Source3"]
+  report (distancexy (-0.8 * max-pxcor) (0.8 * max-pycor)) < 5
+end
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Go procedures                                                                     ;;; 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;***A COMPLETER
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Subsomption - turtles procedures ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;***A COMPLETER
+
+;;; Règles de comportement
+;;; ----------------------
+
+;***A COMPLETER
+
+;;; Percepts 
+;;; --------
+
+;***A COMPLETER
+
+;;; Actions 
+;;; -------
+
+;***A COMPLETER
+
+to avancer
+  if (not [obstacle?] of patch-ahead 1)
+  [
+    fd 1
+    set charge-batterie charge-batterie * 0.99
+  ]
+end
+
+to uphill-marque
+;; tester patchs devant et sur les côtés pour s'orienter vers la concentration de marque la plus forte  
+  let scent-ahead marque-at-angle   0                                                           ;; devant
+  let scent-right marque-at-angle  45                                                           ;; à droite 45 
+  let scent-left marque-at-angle  -45                                                           ;; à gauche 45 
+  if (scent-right > scent-ahead) or (scent-left > scent-ahead)
+  [ ifelse scent-right > scent-left
+    [ rt 45 ]
+    [ lt 45 ] ]
+   sens-suivi-marque
+end
+
+to uphill-signal
+;; tester patchs devant et sur les côtés pour s'orienter vers le signal le plus fort
+  let scent-ahead signal-at-angle   0                                                           ;; devant
+  let scent-right max (list (signal-at-angle  45) (signal-at-angle 60) (signal-at-angle 90))    ;; à droite 45, 60 et 90 degrés
+  let scent-left  max (list (signal-at-angle  -45) (signal-at-angle -60) (signal-at-angle -90)) ;; à gauche 45, 60 et 90 degrés
+  if (scent-right > scent-ahead) or (scent-left > scent-ahead)
+  [ ifelse scent-right > scent-left
+    [ rt 45 ]
+    [ lt 45 ] ]
+end
+
+to sens-suivi-marque
+;; détermine la direction de suivi d'une marque (vers la source de minerai)
+;; tester patchs devant et sur les côtés pour s'orienter vers le signal le moins fort
+  let scent-ahead signal-at-angle   0
+  if scent-ahead > signal
+  [                                                           
+  let scent-right signal-at-angle  45   
+  let scent-left signal-at-angle  -45
+  ifelse scent-right > signal
+  [lt 45]
+  [rt 45]]
+end
+
+to-report signal-at-angle [angle]
+  let p patch-right-and-ahead angle 1
+  if p = nobody [ report 0 ]
+  report [signal] of p
+end
+
+
+to-report marque-at-angle [angle]
+  let p patch-right-and-ahead angle 1
+  if p = nobody [ report 0 ]
+  report [marque] of p
+end
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Plotting procedures                                                               ;;; 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;***A COMPLETER
+
+; *** NetLogo 4.0 Model Copyright Notice ***
+;
+; This model was created as part of the project: CONNECTED MATHEMATICS:
+; MAKING SENSE OF COMPLEX PHENOMENA THROUGH BUILDING OBJECT-BASED PARALLEL
+; MODELS (OBPML).  The project gratefully acknowledges the support of the
+; National Science Foundation (Applications of Advanced Technologies
+; Program) -- grant numbers RED #9552950 and REC #9632612.
+;
+; Copyright 1998 by Uri Wilensky.  All rights reserved.
+;
+; Permission to use, modify or redistribute this model is hereby granted,
+; provided that both of the following requirements are followed:
+; a) this copyright notice is included.
+; b) this model will not be redistributed for profit without permission
+;    from Uri Wilensky.
+; Contact Uri Wilensky for appropriate licenses for redistribution for
+; profit.
+;
+; This model was converted to NetLogo as part of the projects:
+; PARTICIPATORY SIMULATIONS: NETWORK-BASED DESIGN FOR SYSTEMS LEARNING
+; IN CLASSROOMS and/or INTEGRATED SIMULATION AND MODELING ENVIRONMENT.
+; The project gratefully acknowledges the support of the
+; National Science Foundation (REPP & ROLE programs) --
+; grant numbers REC #9814682 and REC-0126227.
+; Converted from StarLogoT to NetLogo, 1998.
+;
+; To refer to this model in academic publications, please use:
+; Wilensky, U. (1998).  NetLogo Ants model.
+; http://ccl.northwestern.edu/netlogo/models/Ants.
+; Center for Connected Learning and Computer-Based Modeling,
+; Northwestern University, Evanston, IL.
+;
+; In other publications, please use:
+; Copyright 1998 Uri Wilensky.  All rights reserved.
+; See http://ccl.northwestern.edu/netlogo/models/Ants
+; for terms of use.
+;
+; *** End of NetLogo 4.0 Model Copyright Notice ***
