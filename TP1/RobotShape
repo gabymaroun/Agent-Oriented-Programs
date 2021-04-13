@@ -1,0 +1,34 @@
+; exemple des robots fourrageurs
+; forme "robot"
+; Fichier : RobotShape.txt
+; Copyright 2018 by Eric Gouardères
+
+; code ci-dessous a ajouter dans les déclarations de formes (shapes) de votre fichier .nlogo
+; par exemple avant les lignes
+; @#$#@#$#@
+
+; NetLogo 6.0.4
+
+
+robot
+true
+0
+Rectangle -16777216 true false 180 150 195 180
+Rectangle -16777216 true false 180 195 195 225
+Rectangle -16777216 true false 105 150 120 180
+Rectangle -16777216 true false 105 195 120 225
+Rectangle -7500403 true true 120 90 180 210
+Rectangle -7500403 true true 30 90 30 105
+Rectangle -7500403 true true 45 105 45 135
+Rectangle -16777216 true false 180 105 195 135
+Rectangle -16777216 true false 105 105 120 135
+Rectangle -7500403 false true 105 105 120 135
+Rectangle -7500403 false true 180 105 195 135
+Rectangle -7500403 false true 105 150 120 180
+Rectangle -7500403 false true 180 150 195 180
+Rectangle -7500403 false true 105 195 120 225
+Rectangle -7500403 false true 180 195 195 225
+Rectangle -16777216 true false 135 120 165 195
+Circle -7500403 true true 129 69 42
+Polygon -7500403 true true 135 60 120 90 165 60 180 90
+Circle -7500403 true true 135 195 30
